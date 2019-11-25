@@ -11,7 +11,7 @@
 </head>
 <body>
 	<h2>CREATE</h2>
-	<form action="form-group" action="CreateServlet" method="post">
+	<form class="form-group" action="CreateServlet" method="post">
 	<p>
 		<label for="txtProduct">Id Product</label>
 		<input class="form-control" type="text" id="txtProduct" name="txtProduct" disabled
