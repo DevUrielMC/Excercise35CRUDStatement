@@ -13,8 +13,8 @@
 <h2>READ INDIVIDUAL</h2>
 	<form action="../ReadIndivitualServlet" method="post">
 		<p>
-			<label for="txtProducto">ID of the product of search:</label> 
-			<input class="form-control" type="text" id="txtIdProducto" name="txIdProducto">
+			<label for="txtIdProduct">ID of the product of search:</label> 
+			<input class="form-control" type="text" id="txtIdProduct" name="txtIdProduct">
 		</p>
 
 		<p>

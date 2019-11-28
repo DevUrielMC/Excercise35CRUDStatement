@@ -1,10 +1,13 @@
 package com.excercise35crudstatement.controller;
 
+
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.servlet.ServletException;
@@ -16,15 +19,16 @@ import javax.servlet.http.HttpServletResponse;
 import com.excercise35crudstatement.model.Products;
 
 /**
- * Servlet implementation class ReadIndivitualServlet
+ * Servlet implementation class DeleteServlet
  */
-@WebServlet("/ReadIndivitualServlet")
-public class ReadIndivitualServlet extends HttpServlet {
+@WebServlet("/DeleteServlet")
+public class DeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		// se añade una configuracion para que pueda leer Ñ
 		response.setContentType("text/html charset='utf-8'");
+		//objeto para que pueda leer
 		PrintWriter output = response.getWriter();
 		
 		//1. Declaramos variables
@@ -34,12 +38,12 @@ public class ReadIndivitualServlet extends HttpServlet {
 		String urlServer="jdbc:mysql://localhost:3306/tiendita?useSSL=false&serverTimezone=UTC";
 		String username="root";
 		String pass="admin";
-		String sentenciaSQL="SELECT * FROM productos WHERE idProducto = "+myProduct.getIdProduct();
-				
+		String sentenciaSQL="DELETE FROM productos WHERE idProducto="+myProduct.getIdProduct();
+		int rowsAffected=0;
+		
 		//2. Declaramos objetos
 		Connection conn = null;
 		Statement stmnt = null;
-		ResultSet rs = null;
 		
 		try
 		{
@@ -51,18 +55,17 @@ public class ReadIndivitualServlet extends HttpServlet {
 			stmnt = conn.createStatement();
 			
 			//6. Ejecutamos la sentencia sql
-			rs = stmnt.executeQuery(sentenciaSQL);
+			rowsAffected = stmnt.executeUpdate(sentenciaSQL);
 			
 			//7. Procesamos los datos
-			rs.next();
-			output.append("<p>");
-			output.append("Id Producto:"+rs.getInt(1));
-			output.append("<br/>");
-			output.append("Nombre Producto:"+rs.getString("nombreProducto"));
-			output.append("<br/>");
-			output.append("Precio Producto:"+rs.getDouble("precioProducto"));
-			output.append("</p>");
-			output.append("<a href='jsp/ReadIndividual.jsp'>Regresar</a>");
+			if(rowsAffected>0)
+			{
+				output.append("Registro borrado con éxito!!!");
+			}
+			else
+			{
+				output.append("Registro NO Encontrado!!!");
+			}
 		}
 		catch(Exception e)
 		{
@@ -72,7 +75,6 @@ public class ReadIndivitualServlet extends HttpServlet {
 		{
 			try
 			{
-				rs.close();
 				stmnt.close();
 				conn.close();
 			}
